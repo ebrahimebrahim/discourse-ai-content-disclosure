@@ -1,0 +1,38 @@
+min_paste_length:
+  type: integer
+  default: 100
+  min: 10
+  max: 2000
+  description: "Minimum pasted text length (characters) to trigger the disclosure nudge. Short pastes like URLs or code snippets won't trigger it."
+
+nudge_duration_seconds:
+  type: integer
+  default: 8
+  min: 3
+  max: 60
+  description: "How many seconds the nudge stays visible before auto-fading. It reappears on the next paste."
+
+generated_label:
+  type: string
+  default: "AI-generated"
+  description: "Button label for fully AI-generated content"
+
+assisted_label:
+  type: string
+  default: "AI-assisted"
+  description: "Button label for AI-assisted content"
+
+nudge_message:
+  type: string
+  default: "Looks like you pasted some content — is it AI-generated?"
+  description: "The prompt message shown in the nudge banner"
+
+generated_disclosure:
+  type: string
+  default: "> :robot: **AI Disclosure:** This post contains AI-generated content."
+  description: "The disclosure text prepended to posts marked as AI-generated"
+
+assisted_disclosure:
+  type: string
+  default: "> :robot: **AI Disclosure:** This post was written with AI assistance."
+  description: "The disclosure text prepended to posts marked as AI-assisted"

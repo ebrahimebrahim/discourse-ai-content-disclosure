@@ -1,0 +1,130 @@
+<!-- AI Content Disclosure — Paste Detection Nudge for Discourse -->
+<!-- Detects paste events in the composer and offers a subtle, non-blocking -->
+<!-- nudge for authors to disclose AI-generated or AI-assisted content. -->
+
+<style>
+  /* ── Nudge banner ─────────────────────────────────────────────── */
+  .ai-disclosure-nudge {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    background: var(--secondary);
+    border: 1px solid var(--primary-low);
+    border-left: 3px solid var(--tertiary);
+    border-radius: 6px;
+    padding: 10px 14px;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.12);
+    z-index: 1060; /* above composer, below modals */
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 8px;
+    font-size: 0.85rem;
+    max-width: 460px;
+    opacity: 1;
+    transform: translateY(0);
+    transition: opacity 0.35s ease, transform 0.35s ease;
+  }
+
+  .ai-disclosure-nudge.--fading-out {
+    opacity: 0;
+    transform: translateY(8px);
+    pointer-events: none;
+  }
+
+  .ai-disclosure-nudge__text {
+    flex: 1 1 100%;
+    color: var(--primary-high);
+    line-height: 1.4;
+    margin-bottom: 2px;
+  }
+
+  .ai-disclosure-nudge__actions {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    flex: 1 1 100%;
+  }
+
+  .ai-disclosure-nudge__btn {
+    padding: 5px 12px;
+    border-radius: 4px;
+    border: 1px solid var(--primary-low);
+    background: var(--secondary);
+    color: var(--primary-high);
+    cursor: pointer;
+    font-size: 0.8rem;
+    font-weight: 500;
+    white-space: nowrap;
+    transition: background 0.15s ease, border-color 0.15s ease;
+  }
+
+  .ai-disclosure-nudge__btn:hover {
+    background: var(--primary-very-low);
+  }
+
+  .ai-disclosure-nudge__btn.--generated {
+    border-color: var(--danger);
+    color: var(--danger);
+  }
+  .ai-disclosure-nudge__btn.--generated:hover {
+    background: var(--danger);
+    color: var(--secondary);
+  }
+
+  .ai-disclosure-nudge__btn.--assisted {
+    border-color: var(--tertiary);
+    color: var(--tertiary);
+  }
+  .ai-disclosure-nudge__btn.--assisted:hover {
+    background: var(--tertiary);
+    color: var(--secondary);
+  }
+
+  .ai-disclosure-nudge__spacer {
+    flex: 1;
+  }
+
+  .ai-disclosure-nudge__dismiss {
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: var(--primary-medium);
+    font-size: 1rem;
+    padding: 2px 6px;
+    line-height: 1;
+    border-radius: 3px;
+    transition: color 0.15s ease, background 0.15s ease;
+  }
+
+  .ai-disclosure-nudge__dismiss:hover {
+    color: var(--primary);
+    background: var(--primary-very-low);
+  }
+
+  /* ── Rendered disclosure blockquote styling ────────────────────── */
+  /* Give the AI disclosure blockquote a subtle distinct look */
+  .cooked blockquote:first-child:has(img.emoji[title=":robot:"]) {
+    border-left-color: var(--tertiary);
+    background: var(--tertiary-very-low, var(--primary-very-low));
+    font-size: 0.9em;
+    opacity: 0.85;
+  }
+
+  /* Fallback for browsers without :has() — targets the robot emoji */
+  .cooked > blockquote:first-child img.emoji[title=":robot:"] {
+    vertical-align: -2px;
+  }
+
+  /* Mobile adjustments */
+  @media (max-width: 600px) {
+    .ai-disclosure-nudge {
+      left: 10px;
+      right: 10px;
+      bottom: 70px; /* above mobile composer toolbar */
+      max-width: none;
+    }
+  }
+</style>
+
+
