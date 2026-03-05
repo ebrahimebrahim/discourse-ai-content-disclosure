@@ -42,8 +42,14 @@ export default apiInitializer((api) => {
   const DESC_ASSISTED        = getSetting("assisted_hover_description", "Reviewed and edited AI-generated content");
   const DESC_HUMAN           = getSetting("human_written_hint", "Content is authored by a human? Just dismiss this notice.");
 
-  // Pattern to detect if a disclosure is already present
-  const DISCLOSURE_PATTERN = /^>\s*:robot:\s*\*\*AI Disclosure:\*\*/m;
+  // Check if either configured disclosure is already present in the text.
+  // Uses the first line of each disclosure string so detection stays in sync
+  // with the configured settings.
+  function hasExistingDisclosure(text) {
+    const genLine = DISCLOSURE_GENERATED.split("\n")[0];
+    const astLine = DISCLOSURE_ASSISTED.split("\n")[0];
+    return (genLine && text.includes(genLine)) || (astLine && text.includes(astLine));
+  }
 
   let nudgeEl = null;
 
@@ -162,7 +168,7 @@ export default apiInitializer((api) => {
     const currentText = getReplyText();
 
     // Don't double-add
-    if (DISCLOSURE_PATTERN.test(currentText)) {
+    if (hasExistingDisclosure(currentText)) {
       hideNudge();
       return;
     }
@@ -196,7 +202,7 @@ export default apiInitializer((api) => {
       const currentText = getReplyText();
 
       // Skip if disclosure already present
-      if (DISCLOSURE_PATTERN.test(currentText)) return;
+      if (hasExistingDisclosure(currentText)) return;
 
       showNudge();
     }, 150);
