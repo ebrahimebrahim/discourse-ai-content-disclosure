@@ -11,7 +11,7 @@ Discourse theme component that detects paste events in the composer and nudges a
 This is a **Discourse theme component** (not a plugin). It follows Discourse's theme component conventions:
 
 - `about.json` — Component manifest (minimum Discourse version: 3.1.0)
-- `settings.yml` — Six admin-configurable theme settings with types, ranges, and defaults
+- `settings.yml` — Nine admin-configurable theme settings with types, ranges, and defaults
 - `common/head_tag.html` — All CSS (injected via `<style>` tag into every page)
 - `javascripts/discourse/api-initializers/ai-disclosure-nudge.js` — All application logic (~210 lines)
 
@@ -22,7 +22,7 @@ This is a **Discourse theme component** (not a plugin). It follows Discourse's t
 - **Lazy DOM creation**: The nudge banner element is created on first paste, not at initialization
 - **Capture-phase event delegation**: Paste listener is registered on `document` in capture phase to intercept before Discourse's own handlers
 - **Settings with fallbacks**: `getSetting()` reads from the `settings` global (injected by Discourse's theme infrastructure) with hardcoded defaults
-- **Disclosure detection**: Regex pattern `/^>\s*:robot:\s*\*\*AI Disclosure:\*\*/m` prevents duplicate disclosures
+- **Disclosure detection**: The `:robot:` emoji prefix (`> :robot:`) is hardcoded; detection checks for this prefix via `hasExistingDisclosure()` to prevent duplicates. Only the message text after the prefix is configurable via settings.
 
 ### CSS Conventions
 

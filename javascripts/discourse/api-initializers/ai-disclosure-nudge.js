@@ -36,19 +36,17 @@ export default apiInitializer((api) => {
   const LABEL_GENERATED      = getSetting("generated_label", "AI-generated");
   const LABEL_ASSISTED       = getSetting("assisted_label", "AI-assisted");
   const NUDGE_MESSAGE        = getSetting("nudge_message", "Looks like you pasted some content — is it AI-generated?");
-  const DISCLOSURE_GENERATED = getSetting("generated_disclosure", "> :robot: **AI Disclosure:** This post contains AI-generated content.");
-  const DISCLOSURE_ASSISTED  = getSetting("assisted_disclosure", "> :robot: **AI Disclosure:** This post was written with AI assistance.");
   const DESC_GENERATED       = getSetting("generated_hover_description", "Lightly reviewed AI-generated content");
   const DESC_ASSISTED        = getSetting("assisted_hover_description", "Reviewed and edited AI-generated content");
   const DESC_HUMAN           = getSetting("human_written_hint", "Content is authored by a human? Just dismiss this notice.");
 
-  // Check if either configured disclosure is already present in the text.
-  // Uses the first line of each disclosure string so detection stays in sync
-  // with the configured settings.
+  // Hardcoded prefix — keeps CSS styling and detection reliable
+  const DISCLOSURE_PREFIX    = "> :robot:";
+  const DISCLOSURE_GENERATED = `${DISCLOSURE_PREFIX} ${getSetting("generated_message", "This post contains AI-generated content.")}`;
+  const DISCLOSURE_ASSISTED  = `${DISCLOSURE_PREFIX} ${getSetting("assisted_message", "This post was written with AI assistance.")}`;
+
   function hasExistingDisclosure(text) {
-    const genLine = DISCLOSURE_GENERATED.split("\n")[0];
-    const astLine = DISCLOSURE_ASSISTED.split("\n")[0];
-    return (genLine && text.includes(genLine)) || (astLine && text.includes(astLine));
+    return text.includes(DISCLOSURE_PREFIX);
   }
 
   let nudgeEl = null;

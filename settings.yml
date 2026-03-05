@@ -20,15 +20,15 @@ nudge_message:
   default: "Looks like you pasted some content — is it AI-generated?"
   description: "The prompt message shown in the nudge banner"
 
-generated_disclosure:
+generated_message:
   type: string
-  default: "> :robot: **AI Disclosure:** This post contains AI-generated content."
-  description: "The disclosure text prepended to posts marked as AI-generated"
+  default: "This post contains AI-generated content."
+  description: "Message after the disclosure prefix for AI-generated content"
 
-assisted_disclosure:
+assisted_message:
   type: string
-  default: "> :robot: **AI Disclosure:** This post was written with AI assistance."
-  description: "The disclosure text prepended to posts marked as AI-assisted"
+  default: "This post was written with AI assistance."
+  description: "Message after the disclosure prefix for AI-assisted content"
 
 generated_hover_description:
   type: string
