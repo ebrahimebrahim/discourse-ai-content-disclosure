@@ -33,7 +33,6 @@ export default apiInitializer((api) => {
   }
 
   const MIN_PASTE_LENGTH     = getSetting("min_paste_length", 100);
-  const FADE_SECONDS         = getSetting("nudge_duration_seconds", 8);
   const LABEL_GENERATED      = getSetting("generated_label", "AI-generated");
   const LABEL_ASSISTED       = getSetting("assisted_label", "AI-assisted");
   const NUDGE_MESSAGE        = getSetting("nudge_message", "Looks like you pasted some content — is it AI-generated?");
@@ -43,8 +42,7 @@ export default apiInitializer((api) => {
   // Pattern to detect if a disclosure is already present
   const DISCLOSURE_PATTERN = /^>\s*:robot:\s*\*\*AI Disclosure:\*\*/m;
 
-  let nudgeEl   = null;
-  let fadeTimer  = null;
+  let nudgeEl = null;
 
   // ── Utility ─────────────────────────────────────────────────
   function escapeHtml(str) {
@@ -97,16 +95,10 @@ export default apiInitializer((api) => {
     el.classList.add("--fading-out");
     void el.offsetHeight;
     el.classList.remove("--fading-out");
-
-    // (Re)start auto-fade timer
-    clearTimeout(fadeTimer);
-    fadeTimer = setTimeout(hideNudge, FADE_SECONDS * 1000);
   }
 
   function hideNudge() {
     if (nudgeEl) nudgeEl.classList.add("--fading-out");
-    clearTimeout(fadeTimer);
-    fadeTimer = null;
   }
 
   // ── Composer access (supports both modern service and legacy controller) ─

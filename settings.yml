@@ -5,13 +5,6 @@ min_paste_length:
   max: 2000
   description: "Minimum pasted text length (characters) to trigger the disclosure nudge. Short pastes like URLs or code snippets won't trigger it."
 
-nudge_duration_seconds:
-  type: integer
-  default: 8
-  min: 3
-  max: 60
-  description: "How many seconds the nudge stays visible before auto-fading. It reappears on the next paste."
-
 generated_label:
   type: string
   default: "AI-generated"
