@@ -29,3 +29,18 @@ assisted_disclosure:
   type: string
   default: "> :robot: **AI Disclosure:** This post was written with AI assistance."
   description: "The disclosure text prepended to posts marked as AI-assisted"
+
+generated_hover_description:
+  type: string
+  default: "Lightly reviewed AI-generated content"
+  description: "Description shown below buttons when hovering the AI-generated button"
+
+assisted_hover_description:
+  type: string
+  default: "Reviewed and edited AI-generated content"
+  description: "Description shown below buttons when hovering the AI-assisted button"
+
+human_written_hint:
+  type: string
+  default: "Content is authored by a human? Just dismiss this notice."
+  description: "Default description text shown below buttons when no button is hovered"

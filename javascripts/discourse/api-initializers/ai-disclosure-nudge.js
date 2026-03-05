@@ -38,6 +38,9 @@ export default apiInitializer((api) => {
   const NUDGE_MESSAGE        = getSetting("nudge_message", "Looks like you pasted some content — is it AI-generated?");
   const DISCLOSURE_GENERATED = getSetting("generated_disclosure", "> :robot: **AI Disclosure:** This post contains AI-generated content.");
   const DISCLOSURE_ASSISTED  = getSetting("assisted_disclosure", "> :robot: **AI Disclosure:** This post was written with AI assistance.");
+  const DESC_GENERATED       = getSetting("generated_hover_description", "Lightly reviewed AI-generated content");
+  const DESC_ASSISTED        = getSetting("assisted_hover_description", "Reviewed and edited AI-generated content");
+  const DESC_HUMAN           = getSetting("human_written_hint", "Content is authored by a human? Just dismiss this notice.");
 
   // Pattern to detect if a disclosure is already present
   const DISCLOSURE_PATTERN = /^>\s*:robot:\s*\*\*AI Disclosure:\*\*/m;
@@ -70,6 +73,7 @@ export default apiInitializer((api) => {
         <button class="ai-disclosure-nudge__dismiss"
                 title="Dismiss" aria-label="Dismiss">✕</button>
       </span>
+      <span class="ai-disclosure-nudge__description">${escapeHtml(DESC_HUMAN)}</span>
     `;
     document.body.appendChild(nudgeEl);
 
@@ -83,6 +87,19 @@ export default apiInitializer((api) => {
       if (e.target.closest(".ai-disclosure-nudge__dismiss")) {
         hideNudge();
       }
+    });
+
+    // Dynamic description text that changes on button hover
+    const descEl = nudgeEl.querySelector(".ai-disclosure-nudge__description");
+    const hoverDescriptions = { generated: DESC_GENERATED, assisted: DESC_ASSISTED };
+
+    nudgeEl.querySelectorAll("[data-disclosure]").forEach((btn) => {
+      btn.addEventListener("mouseenter", () => {
+        descEl.textContent = hoverDescriptions[btn.dataset.disclosure];
+      });
+      btn.addEventListener("mouseleave", () => {
+        descEl.textContent = DESC_HUMAN;
+      });
     });
 
     return nudgeEl;
